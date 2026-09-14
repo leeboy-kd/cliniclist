@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대구 의원 디렉토리</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .logo-placeholder { background-color: #f8fafc; border: 1px dashed #cbd5e1; }
+    </style>
+</head>
+<body class="bg-white text-slate-800 min-h-screen p-4 sm:p-6">
+    <!-- Clean, Full-width Responsive Table Only -->
+    <div class="w-full overflow-x-auto shadow-sm rounded-lg border border-slate-200">
+        <table class="w-full text-left border-collapse">
+            <thead>
+                <tr class="bg-slate-100 border-b border-slate-300 text-slate-700 font-semibold text-sm uppercase">
+                    <th scope="col" class="py-3 px-4 text-center w-24 border-r border-slate-200">로고</th>
+                    <th scope="col" class="py-3 px-4 min-w-[160px] border-r border-slate-200">의원명</th>
+                    <th scope="col" class="py-3 px-4 min-w-[200px] border-r border-slate-200">주소</th>
+                    <th scope="col" class="py-3 px-4 min-w-[130px] border-r border-slate-200">전화번호</th>
+                    <th scope="col" class="py-3 px-4 min-w-[140px] text-center">홈페이지</th>
+                </tr>
+            </thead>
+            <tbody id="clinic-list-body" class="divide-y divide-slate-200 text-sm">
+                <!-- Data rendered dynamically -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        const clinicData = [
+            { id: 1, name: "2080연합피부과의원", address: "북구 침산로 138 (침산동)", phone: "053-354-2800", website: "", logo: "" },
+            { id: 2, name: "갑자한의원", address: "북구 동북로 236 (복현동)", phone: "053-942-3191", website: "", logo: "" },
+            { id: 3, name: "검단한의원", address: "북구 검단로 117 (검단동)", phone: "053-383-1800", website: "", logo: "" },
+            { id: 4, name: "경대연합연경속내과의원", address: "동구 동화천로 390 (지묘동)", phone: "053-983-5300", website: "", logo: "" },
+            { id: 5, name: "경산연합이비인후과의원", address: "수성구 달구벌대로 3188 (신매동)", phone: "053-793-0075", website: "", logo: "" },
+            { id: 6, name: "기쁨큰치과의원", address: "북구 팔거천동로 222 (동천동)", phone: "053-324-2875", website: "", logo: "" },
+            { id: 7, name: "기운찬마취통증의학과의원", address: "수성구 지범로 190 (범물동)", phone: "053-784-9501", website: "", logo: "" },
+            { id: 8, name: "기천한의원", address: "북구 대학로 123 (산격동)", phone: "053-952-3375", website: "", logo: "" },
+            { id: 9, name: "길치과의원", address: "북구 칠곡중앙대로 233 (태전동)", phone: "053-323-2875", website: "", logo: "" },
+            { id: 10, name: "김시형더좋은치과의원", address: "북구 침산남로 157 (침산동)", phone: "053-356-2275", website: "", logo: "" },
+            { id: 11, name: "다나연합내과의원", address: "북구 칠곡중앙대로 426 (읍내동)", phone: "053-324-7700", website: "", logo: "" },
+            { id: 12, name: "더베스트치과", address: "동구 안심로 63 (율하동)", phone: "053-965-2875", website: "", logo: "" },
+            { id: 13, name: "동대구내과의원", address: "동구 동대구로 542 (효목동)", phone: "053-752-9595", website: "", logo: "" },
+            { id: 14, name: "동영연합의원", address: "수성구 신매로 51 (신매동)", phone: "053-792-8275", website: "", logo: "" },
+            { id: 15, name: "동제한의원", address: "수성구 들안로 235 (수성동3가)", phone: "053-754-0010", website: "", logo: "" },
+            { id: 16, name: "동천한의원", address: "북구 팔거천동로 202 (동천동)", phone: "053-325-7582", website: "", logo: "" },
+            { id: 17, name: "렛츠성형외과의원", address: "중구 달구벌대로 2127 (삼덕동1가)", phone: "053-421-5555", website: "", logo: "" },
+            { id: 18, name: "만평치과", address: "서구 팔달로 70 (비산동)", phone: "053-352-7528", website: "", logo: "" },
+            { id: 19, name: "명인한의원", address: "북구 동북로 232 (복현동)", phone: "053-952-7585", website: "", logo: "" },
+            { id: 20, name: "미래이비인후과의원", address: "북구 칠곡중앙대로 237 (태전동)", phone: "053-326-8575", website: "", logo: "" },
+            { id: 21, name: "미소지앤의원", address: "북구 동북로 161 (산격동)", phone: "053-944-7975", website: "", logo: "" },
+            { id: 22, name: "미즈피부과의원", address: "수성구 달구벌대로 3205 (신매동)", phone: "053-791-7582", website: "", logo: "" },
+            { id: 23, name: "복현내과의원", address: "북구 동북로 250 (복현동)", phone: "053-952-0075", website: "", logo: "" },
+            { id: 24, name: "복현피부과의원", address: "북구 동북로 271 (복현동)", phone: "053-943-7766", website: "", logo: "" },
+            { id: 25, name: "비엘성형외과피부과의원", address: "중구 동성로2길 95 (공평동)", phone: "1800-6500", website: "https://www.bloffice.co.kr", logo: "https://www.bloffice.co.kr/img/common/logo.png" },
+            { id: 26, name: "상인한의원", address: "달서구 월배로 202 (상인동)", phone: "053-636-1075", website: "", logo: "" },
+            { id: 27, name: "새소망내과의원", address: "북구 칠곡중앙대로 541 (읍내동)", phone: "053-322-9975", website: "", logo: "" },
+            { id: 28, name: "서울스마트피부과의원", address: "중구 달구벌대로 2077 (수동)", phone: "053-254-8275", website: "", logo: "" },
+            { id: 29, name: "서울태365한의원", address: "북구 동북로 156 (산격동)", phone: "053-754-1075", website: "", logo: "" },
+            { id: 30, name: "신세계연합의원", address: "북구 동북로 153 (산격동)", phone: "053-955-7585", website: "", logo: "" },
+            { id: 31, name: "신세계정형외과의원", address: "북구 동북로 151 (산격동)", phone: "053-953-8875", website: "", logo: "" },
+            { id: 32, name: "에스본정형외과의원", address: "북구 칠곡중앙대로 425 (관음동)", phone: "053-322-8575", website: "", logo: "" },
+            { id: 33, name: "예스연합비뇨기과", address: "수성구 달구벌대로 3188 (신매동)", phone: "053-795-8575", website: "", logo: "" },
+            { id: 34, name: "예재호내과의원", address: "북구 동북로 213 (복현동)", phone: "053-955-0875", website: "", logo: "" },
+            { id: 35, name: "올리브치과", address: "북구 침산남로 143 (침산동)", phone: "053-353-2875", website: "", logo: "" },
+            { id: 36, name: "요셉신경외과", address: "북구 칠곡중앙대로 435 (관음동)", phone: "053-325-8275", website: "", logo: "" },
+            { id: 37, name: "유길한의원", address: "북구 칠성남로 194 (칠성동2가)", phone: "053-424-7582", website: "", logo: "" },
+            { id: 38, name: "윤한의원", address: "북구 동북로 179 (복현동)", phone: "053-957-1075", website: "", logo: "" },
+            { id: 39, name: "이사랑치과", address: "북구 침산남로 98 (침산동)", phone: "053-351-2875", website: "", logo: "" },
+            { id: 40, name: "장수한의원", address: "북구 칠곡중앙대로 433 (관음동)", phone: "053-321-7582", website: "", logo: "" },
+            { id: 41, name: "장의원", address: "북구 검단로 255 (검단동)", phone: "053-383-7585", website: "", logo: "" },
+            { id: 42, name: "제생한의원", address: "동구 아양로 171 (신암동)", phone: "053-954-0887", website: "", logo: "" },
+            { id: 43, name: "최상희치과의원", address: "남구 명덕로 62 (대명동)", phone: "053-622-2875", website: "", logo: "" },
+            { id: 44, name: "최종원한의원", address: "중구 국채보상로 622 (공평동)", phone: "053-424-1323", website: "", logo: "" },
+            { id: 45, name: "코아이비인후과의원", address: "북구 동북로 172 (산격동)", phone: "053-954-7585", website: "", logo: "" },
+            { id: 46, name: "푸른맘한의원", address: "달서구 달구벌대로251길 33 (이곡동)", phone: "053-588-3366", website: "", logo: "" },
+            { id: 47, name: "하나한의원", address: "수성구 지범로39길 13 (범물동)", phone: "053-781-8275", website: "", logo: "" }
+        ];
+
+        function renderTable(data) {
+            const tbody = document.getElementById('clinic-list-body');
+            tbody.innerHTML = '';
+
+            data.forEach((clinic) => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition-colors border-b border-slate-200";
+
+                let logoHtml = '';
+                if (clinic.logo) {
+                    logoHtml = `<img src="${clinic.logo}" alt="${clinic.name} 로고" class="max-h-10 max-w-[70px] object-contain mx-auto" onerror="this.onerror=null; this.parentElement.innerHTML='<div class=\'w-16 h-9 rounded logo-placeholder flex items-center justify-center text-slate-400 text-xs mx-auto\'><i class=\'fa-regular fa-hospital text-slate-300\'></i></div>'">`;
+                } else {
+                    logoHtml = `
+                        <div class="w-16 h-9 rounded logo-placeholder flex items-center justify-center text-slate-400 text-xs mx-auto" title="로고 이미지 공간">
+                            <i class="fa-regular fa-hospital text-slate-300"></i>
+                        </div>
+                    `;
+                }
+
+                let websiteHtml = '';
+                if (clinic.website) {
+                    websiteHtml = `
+                        <a href="${clinic.website}" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium text-blue-600 bg-blue-50 hover:bg-blue-100 rounded transition-colors">
+                            <span>바로가기</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
+                        </a>
+                    `;
+                } else {
+                    websiteHtml = `<span class="text-slate-300 text-xs">-</span>`;
+                }
+
+                tr.innerHTML = `
+                    <td class="py-2.5 px-4 text-center align-middle border-r border-slate-200">${logoHtml}</td>
+                    <td class="py-2.5 px-4 font-semibold text-slate-900 align-middle border-r border-slate-200">${clinic.name}</td>
+                    <td class="py-2.5 px-4 text-slate-600 align-middle border-r border-slate-200">${clinic.address}</td>
+                    <td class="py-2.5 px-4 text-slate-700 font-mono text-xs sm:text-sm align-middle border-r border-slate-200">${clinic.phone}</td>
+                    <td class="py-2.5 px-4 text-center align-middle">${websiteHtml}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        window.onload = function() {
+            renderTable(clinicData);
+        };
+    </script>
+</body>
+</html>
